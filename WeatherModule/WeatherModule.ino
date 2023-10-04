@@ -27,6 +27,8 @@ void setup() {
   radio.openWritingPipe(address);
   radio.setPALevel(RF24_PA_MAX);
   radio.stopListening();
+  radio.setDataRate(RF24_250KBPS);
+  radio.setChannel(115);
   SPI.begin();
 
 }
@@ -72,15 +74,13 @@ void getBlomfukt(void){
 }
 
 void lampOn(void){
-  uint8_t buf = 1;
-  radio.write(&buf, 1);
+  int buf = 1;
+  radio.write(&buf, sizeof(buf));
 }
 
 void lampOff(void){
-  testFunction();
-  testFunction();
-  testFunction();
-  testFunction();
+  int buf = 2;
+  radio.write(&buf, sizeof(buf));
 }
 
 void
