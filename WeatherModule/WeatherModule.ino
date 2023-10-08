@@ -64,7 +64,8 @@ void printTemp(){
 }
 
 void vattnaBlomma(){
-  testFunction();
+  int buf = 1;
+  radio.write(&buf, sizeof(buf));
   
 }
 
@@ -74,12 +75,12 @@ void getBlomfukt(void){
 }
 
 void lampOn(void){
-  int buf = 1;
+  int buf = 3;
   radio.write(&buf, sizeof(buf));
 }
 
 void lampOff(void){
-  int buf = 2;
+  int buf = 4;
   radio.write(&buf, sizeof(buf));
 }
 

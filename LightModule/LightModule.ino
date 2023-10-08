@@ -21,10 +21,10 @@ void loop() {
   if (radio.available()) {
     int input = 0;
     radio.read(&input, sizeof(input));
-    if (input == 1){
+    if (input == 3){
       digitalWrite(4, HIGH);
     }
-    if (input == 2){
+    if (input == 4){
       digitalWrite(4, LOW);
     }
   }
