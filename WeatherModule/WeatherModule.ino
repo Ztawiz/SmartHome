@@ -70,8 +70,8 @@ void vattnaBlomma(){
 }
 
 void getBlomfukt(void){
-  testFunction();
-  testFunction();
+  int buf = 2;
+  radio.write(&buf, sizeof(buf));
 }
 
 void lampOn(void){

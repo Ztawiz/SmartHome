@@ -27,18 +27,20 @@ void setup() {
   radio.startListening();
   radio.setDataRate(RF24_250KBPS);
   radio.setChannel(115);
-  SPI.begin();
+  //SPI.begin();
 }
 
 void loop() {
-  if (Serial.available()){
-    int buf = Serial.read();
-    if (buf == vattnaValue){
+  if (radio.available()){
+    int input = 0;
+    radio.read(&input, sizeof(input));
+    if (input == vattnaValue){
       vattna();
       Serial.println("Vi fick en etta!");
     }
-    if (buf == fuktValue){
+    if (input == fuktValue){
       fukt();
+      Serial.println("vi fick en tvaa!");
     }
   }
 }
