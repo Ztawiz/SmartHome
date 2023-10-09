@@ -2,10 +2,11 @@
 #include <RF24.h>
 #include <nRF24L01.h>
 #include <Servo.h>
+#include "Adafruit_seesaw.h"
 
 #define pumpPin 3         // pin som styr pumpen.
 #define vattnaValue 1     // värdet som tas emot av radio och innebär att vi ska vattna.
-#define fuktValue 2       // Värdet som tas emot av radio och innebär att vi ska mäta och skicka fuktvärde.
+#define fuktValue 5       // Värdet som tas emot av radio och innebär att vi ska mäta och skicka fuktvärde.
 #define servoPin 5
 
 void vattna(void);
@@ -13,6 +14,7 @@ void fukt(void);
 
 RF24 radio(7, 8);
 Servo myServo;
+Adafruit_seesaw ss;
 
 
 const byte address[6] = "00001";
@@ -21,6 +23,8 @@ void setup() {
   pinMode(pumpPin, OUTPUT);
   myServo.attach(servoPin);
   Serial.begin(9600);
+  ss.begin(0x36);
+  ss.UARTSetBaud(9600);
   radio.begin();
   radio.openReadingPipe(0, address);
   radio.setPALevel(RF24_PA_MAX);
@@ -34,13 +38,14 @@ void loop() {
   if (radio.available()){
     int input = 0;
     radio.read(&input, sizeof(input));
+    Serial.print("value: "); Serial.println(input);
     if (input == vattnaValue){
       vattna();
-      Serial.println("Vi fick en etta!");
+      Serial.println("Vi ska vattna!");
     }
     if (input == fuktValue){
+      Serial.println("vi ska mata fukt!");
       fukt();
-      Serial.println("vi fick en tvaa!");
     }
   }
 }
@@ -62,5 +67,10 @@ void vattna(void){            // Vattnar blomman.
 }
 
 void fukt(void){              // Denna ska mäta och skicka fuktvärdet.
+  uint16_t capread = ss.touchRead(0);
+  uint16_t percent = (capread - 320);
+  percent = map(percent, 0, 665, 0, 100);
 
+  Serial.print("Capacitive: "); Serial.println(capread);
+  Serial.print("Moisture: "); Serial.print(percent); Serial.println("%");                            // sensorns pins är jord, Vin, SDA(A4), SCL(A5).
 }

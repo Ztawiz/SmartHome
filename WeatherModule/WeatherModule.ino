@@ -70,7 +70,8 @@ void vattnaBlomma(){
 }
 
 void getBlomfukt(void){
-  int buf = 2;
+  //Serial.println("vi ar i getBlomFukt");
+  int buf = 5;
   radio.write(&buf, sizeof(buf));
 }
 
@@ -84,8 +85,7 @@ void lampOff(void){
   radio.write(&buf, sizeof(buf));
 }
 
-void
- testFunction(void){
+void testFunction(void){
   digitalWrite(diodPin, 1);
   delay(500);
   digitalWrite(diodPin, 0);
