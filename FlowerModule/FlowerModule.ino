@@ -72,5 +72,12 @@ void fukt(void){              // Denna ska mäta och skicka fuktvärdet.
   percent = map(percent, 0, 665, 0, 100);
 
   Serial.print("Capacitive: "); Serial.println(capread);
-  Serial.print("Moisture: "); Serial.print(percent); Serial.println("%");                            // sensorns pins är jord, Vin, SDA(A4), SCL(A5).
+  Serial.print("Moisture: "); Serial.print(percent); Serial.println("%");      // sensorns pins är jord, Vin, SDA(A4), SCL(A5).
+
+  radio.openWritingPipe(address);
+  radio.stopListening();
+  radio.write(&percent, sizeof(percent));
+
+  radio.openReadingPipe(0, address);
+  radio.startListening();
 }

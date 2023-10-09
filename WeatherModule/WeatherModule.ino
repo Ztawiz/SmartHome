@@ -73,6 +73,22 @@ void getBlomfukt(void){
   //Serial.println("vi ar i getBlomFukt");
   int buf = 5;
   radio.write(&buf, sizeof(buf));
+
+  radio.openReadingPipe(0, address);
+  radio.startListening();
+
+  unsigned long timer = millis();
+  while ((millis()-timer)<5000){
+    if (radio.available()){
+      int input = 0;
+      radio.read(&input, sizeof(input));
+      Serial.write(input);
+
+      radio.stopListening();
+      radio.openWritingPipe(address);
+
+    }
+  }
 }
 
 void lampOn(void){
